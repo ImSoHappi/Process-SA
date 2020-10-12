@@ -1,0 +1,185 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+    
+    <div class="page-inner">
+
+        <div class="page-header">
+            <h4 class="page-title">{{ process.name }}</h4>
+            <ul class="breadcrumbs">
+                <li class="nav-home">
+                    <a href="{% url 'client_list' %} ">
+                        <i class="flaticon-home"></i>
+                    </a>
+                </li>
+                <li class="separator">
+                    <i class="flaticon-right-arrow"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'process_list' client_pk=client.pk %}">Listado: {{ client.name }}</a>
+                </li>
+                <li class="separator">
+                    <i class="flaticon-right-arrow"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="">{{ process.name }}</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h1 class="card-title">Detalles</h1>
+            </div>
+              <div class="card-body mb-4 mt-4">
+                <div class="d-flex flex-wrap justify-content-around pb-2 pt-4">
+    
+                  <div class="px-2 pb-2 pb-md-0 text-center">
+                    <div id="finished-circle"></div>
+                    <h6 class="fw-bold mt-3 mb-0">Tareas terminadas</h6>
+                  </div>
+    
+                  <div class="px-2 pb-2 pb-md-0 text-center">
+                    <div id="inprogress-circle"></div>
+                    <h6 class="fw-bold mt-3 mb-0">Tareas en proceso</h6>
+                  </div>
+    
+                  <div class="px-2 pb-2 pb-md-0 text-center">
+                    <div id="expired-circle"></div>
+                    <h6 class="fw-bold mt-3 mb-0">Tareas atrasadas</h6>
+                  </div>
+    
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-5">
+            <div class="progress progress-sm" style="height: 30px;">
+                <div class="progress-bar bg-success 
+                {% if percentage <= 20 %}w-25{% endif %}
+                {% if percentage <= 50 and  percentage > 20 %}w-50{% endif %}
+                {% if percentage <= 99 and  percentage > 50 %}w-75{% endif %}
+                {% if percentage == 100 %}w-100{% endif %}" role="progressbar" aria-valuenow="{{ percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <div class="d-flex justify-content-between mt-2">
+                <h4 class="mb-0">Cumplido</h4>
+                <h4 class="mb-0">{{ percentage }}%</h4>
+            </div>
+        </div>
+
+        <!-- TimeLine -->
+        
+        {% if employee.role == 0 or employee.role == 2 %}
+            <div>
+                <a href="{% url 'add_task' client_pk=client.pk process_pk=process.pk %}" class="mb-5"><button class="btn btn-success"><span class="btn-label"><i class="fa fa-plus"></i></span>Crear tarea</button></a>
+            </div>
+        {% endif %}
+
+        <div class="col-md-12 mb-1 mt-5 row">
+            <div class="col-md-6"><h3><b><center>Tareas</center></b></h3></div>
+            <div class="col-md-6 ml-auto"><h3><b><center>Mis tareas</center></b></h3></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="timeline">
+                        {% for task in task_list %}
+                            <li class="{% if task.responsable.id == employee.id %}timeline-inverted{% endif %}"> 
+                                {% if task.status == 0 %}<div class="timeline-badge success"><i class="fas fa-calendar-check"></i></div>{% endif %}
+                                {% if task.status == 1 %}<div class="timeline-badge warning"><i class="fas fa-calendar-minus"></i></div>{% endif %}
+                                {% if task.status == 2 %}<div class="timeline-badge danger"><i class="fas fa-calendar-times"></i></div>{% endif %}
+                                <div class="timeline-panel">
+                                    <div class="timeline-heading">
+                                        <h1 class="timeline-title">{{ task.name }}</h1>
+                                        <p><small class="text-muted">{{ task.created_at }} - {{ task.expire_at }}</small></p>
+                                    </div>
+                                    <div class="timeline-body">
+                                        <h5 class="text-muted">Responsable: {{ task.responsable }}</h5>
+                                        <p>{{ task.description }}</p>
+                                    </div>
+                                    
+                                    {% if task.responsable.id == employee.id or employee.role == 0 %}
+                                        {% if task.status != 0 %}
+                                            <hr>
+
+                                            <div class="btn-group dropdown">
+                                                <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                    <span class="btn-label">
+                                                        <i class="fa fa-cog"></i>
+                                                    </span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <li>
+                                                        <form method="POST" name="finish_task">
+                                                            {% csrf_token %}
+                                                            <input name="taskpk" style="display: none;" type="text" value="{{ task.pk }}">
+                                                            <input type="submit" value="Completar" name="finish_task" onsubmit="setFormSubmitting()" class="dropdown-item" />
+                                                        </form>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </li>
+                        {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+
+{% block javascripts %}
+<script>
+		Circles.create({
+			id:'inprogress-circle',
+			radius:90,
+			value:{{ inprogress_task }},
+			maxValue:{{ all_task }},
+			width:20,
+			text: {{ inprogress_task }},
+			colors:['#f1f1f1', '#FF9E27'],
+			duration:400,
+			wrpClass:'circles-wrp',
+			textClass:'circles-text',
+			styleWrapper:true,
+			styleText:true
+		})
+
+		Circles.create({
+			id:'finished-circle',
+			radius:90,
+			value:{{ finished_task }},
+			maxValue:{{ all_task }},
+			width:20,
+			text: {{ finished_task }},
+			colors:['#f1f1f1', '#2BB930'],
+			duration:400,
+			wrpClass:'circles-wrp',
+			textClass:'circles-text',
+			styleWrapper:true,
+			styleText:true
+		})
+
+		Circles.create({
+			id:'expired-circle',
+			radius:90,
+			value:{{ expired_task }},
+			maxValue:{{ all_task }},
+			width:20,
+			text: {{ expired_task }},
+			colors:['#f1f1f1', '#F25961'],
+			duration:400,
+			wrpClass:'circles-wrp',
+			textClass:'circles-text',
+			styleWrapper:true,
+			styleText:true
+		})
+</script>
+
+{% endblock javascripts %}

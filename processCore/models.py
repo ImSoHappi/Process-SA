@@ -6,7 +6,9 @@ from django.utils import timezone
 TASK_STATUS = (
     (0, 'Terminada'),
     (1, 'En Proceso'),
-    (2, 'Atrasada')
+    (2, 'Atrasada'),
+    (3, 'Rechazado'),
+    (4, 'Confirmacion')
 )
 
 class Client(models.Model):
@@ -32,10 +34,20 @@ class Process(models.Model):
 class Task(models.Model):
     process = models.ForeignKey('Process', on_delete = models.CASCADE)
     name = models.CharField(max_length=50)
+    responsable = models.ForeignKey('processAuth.userModel', on_delete = models.CASCADE, blank=True)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     expire_at = models.DateTimeField()
-    status = models.IntegerField(choices = TASK_STATUS, default=1)
+    status = models.IntegerField(choices = TASK_STATUS, default=4)
     
     def __str__(self):
         return self.name
+
+class Rejectcomment(models.Model):
+    task = models.ForeignKey('Task', on_delete = models.CASCADE)
+    responsable = models.ForeignKey('processAuth.userModel', on_delete = models.CASCADE, blank=True)
+    reason = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.reason

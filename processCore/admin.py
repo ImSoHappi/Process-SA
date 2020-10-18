@@ -6,3 +6,4 @@ from .models import *
 admin.site.register(Client)
 admin.site.register(Process)
 admin.site.register(Task)
+admin.site.register(Rejectcomment)

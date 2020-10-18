@@ -1,0 +1,22 @@
+<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title">Detalle del rechazo</h2>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+            <div class="modal-body card-body">
+                <h4 class="card-title">Responsable: {{ comment.responsable }}</h4>
+                <p class="text-muted mt--1">{{ comment.created_at }}</p>
+                <h5 class="card-title">Razón:</h5>
+                <p>{{ comment.reason }}</p>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-danger" type="button" data-dismiss="modal">Eliminar tarea</button>
+                <button class="btn btn-primary" type="submit">Editar tarea</button>
+            </div>
+    </div>
+</div>

@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'y6%pt3cw#-%eh79p_r%=8$#=7=gl$*4vs6qq&5_eh#s1w@pna^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -76,19 +76,27 @@ WSGI_APPLICATION = 'processBase.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.oracle',
-        'NAME': '3.227.211.148:1521/xe',
-        'USER': 'c##processbd',
-        'PASSWORD': '123asd123',
-        'TEST': {
-            'USER': 'default_test',
-            'TBLSPACE': 'default_test_tbls',
-            'TBLSPACE_TMP': 'default_test_tbls_tmp',
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.oracle',
+            'NAME': '3.227.211.148:1521/xe',
+            'USER': 'c##processbd',
+            'PASSWORD': '123asd123',
+            'TEST': {
+                'USER': 'default_test',
+                'TBLSPACE': 'default_test_tbls',
+                'TBLSPACE_TMP': 'default_test_tbls_tmp',
+            },
         },
-    },
-}
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators

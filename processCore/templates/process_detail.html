@@ -59,9 +59,10 @@
         <div class="mb-5">
             <div class="progress progress-sm" style="height: 30px;">
                 <div class="progress-bar bg-success 
-                {% if percentage <= 20 %}w-25{% endif %}
-                {% if percentage <= 50 and  percentage > 20 %}w-50{% endif %}
-                {% if percentage <= 99 and  percentage > 50 %}w-75{% endif %}
+                {% if percentage == 0 %}w-0{% endif %}
+                {% if percentage <= 20 and percentage > 0 %}w-25{% endif %}
+                {% if percentage <= 50 and percentage > 20 %}w-50{% endif %}
+                {% if percentage <= 99 and percentage > 50 %}w-75{% endif %}
                 {% if percentage == 100 %}w-100{% endif %}" role="progressbar" aria-valuenow="{{ percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
             <div class="d-flex justify-content-between mt-2">
@@ -73,9 +74,9 @@
         <!-- TimeLine -->
         
         {% if employee.role == 0 or employee.role == 2 %}
-            <div>
-                <a href="{% url 'add_task' client_pk=client.pk process_pk=process.pk %}" class="mb-5"><button class="btn btn-success"><span class="btn-label"><i class="fa fa-plus"></i></span>Crear tarea</button></a>
-            </div>
+            <center><div>
+                <a href="{% url 'add_task' client_pk=client.pk process_pk=process.pk %}" class="mb-5"><button class="btn btn-success btn-lg"><span class="btn-label"><i class="fa fa-plus"></i></span>Crear tarea</button></a>
+            </div></center>
         {% endif %}
 
         <div class="col-md-12 mb-1 mt-5 row">
@@ -91,18 +92,28 @@
                                 {% if task.status == 0 %}<div class="timeline-badge success"><i class="fas fa-calendar-check"></i></div>{% endif %}
                                 {% if task.status == 1 %}<div class="timeline-badge warning"><i class="fas fa-calendar-minus"></i></div>{% endif %}
                                 {% if task.status == 2 %}<div class="timeline-badge danger"><i class="fas fa-calendar-times"></i></div>{% endif %}
+                                {% if task.status == 3 %}<div class="timeline-badge danger"><i class="fas fa-bell-slash"></i></div>{% endif %}
+                                {% if task.status == 4 %}<div class="timeline-badge warning"><i class="fas fa-bell"></i></div>{% endif %}
                                 <div class="timeline-panel">
                                     <div class="timeline-heading">
-                                        <h1 class="timeline-title">{{ task.name }}</h1>
-                                        <p><small class="text-muted">{{ task.created_at }} - {{ task.expire_at }}</small></p>
+                                        <h1 class="timeline-title">
+                                            {{ task.name }} 
+                                            {% if task.status == 4 %}<span class="h5 text-success">Nuevo</span>{% endif %} 
+                                            {% if task.status == 3 %}<span class="h5 text-warning">Rechazado:</span> <span class="text-warning h6">{% for comment in comment_list %} {% if comment.task.pk == task.pk %} {{ comment.created_at | date:'d/m/Y' }} </span><button class="btn btn-info btn-xs pull-right" onclick="open_modal('{% url 'detail_reject' client_pk=process.client.pk process_pk=process.pk task_pk=task.pk reject_pk=comment.pk %}')">Revisar</button>{% endif %} {% endfor %}{% endif %}
+                                            {% if task.status == 1 %}<span class="h5 text-primary">En proceso</span>{% endif %}
+                                            {% if task.status == 2 %}<span class="h5 text-danger">Atrasada</span>{% endif %}
+                                            {% if task.status == 0 %}<span class="h5 text-secondary">Terminada</span>{% endif %}
+                                        </h1>
+                                        <p><small class="text-muted mt--5">{{ task.created_at | date:'d/m/Y' }} - {{ task.expire_at | date:'d/m/Y' }}</small></p>
                                     </div>
                                     <div class="timeline-body">
-                                        <h5 class="text-muted">Responsable: {{ task.responsable }}</h5>
+                                        <h5 class="text-muted mt--2">Responsable: {{ task.responsable }}</h5>
+                                        <br>
                                         <p>{{ task.description }}</p>
                                     </div>
                                     
                                     {% if task.responsable.id == employee.id or employee.role == 0 %}
-                                        {% if task.status != 0 %}
+                                        {% if task.status == 4 %}
                                             <hr>
 
                                             <div class="btn-group dropdown">
@@ -116,12 +127,35 @@
                                                         <form method="POST" name="finish_task">
                                                             {% csrf_token %}
                                                             <input name="taskpk" style="display: none;" type="text" value="{{ task.pk }}">
-                                                            <input type="submit" value="Completar" name="finish_task" onsubmit="setFormSubmitting()" class="dropdown-item" />
+                                                            <input type="submit" value="Aceptar" name="accept_task" onsubmit="setFormSubmitting()" class="dropdown-item" />
+                                                            <input value="Rechazar" name="reject_task" onclick="open_modal('{% url 'reject_task' client_pk=process.client.pk process_pk=process.pk task_pk=task.pk %}')" class="dropdown-item" />
                                                         </form>
                                                     </li>
                                                 </ul>
                                             </div>
                                         {% endif %}
+
+                                        {% if task.status == 1 %}
+                                        <hr>
+
+                                        <div class="btn-group dropdown">
+                                            <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                <span class="btn-label">
+                                                    <i class="fa fa-cog"></i>
+                                                </span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li>
+                                                    <form method="POST" name="finish_task">
+                                                        {% csrf_token %}
+                                                        <input name="taskpk" style="display: none;" type="text" value="{{ task.pk }}">
+                                                        <input type="submit" value="Completar" name="finish_task" onsubmit="setFormSubmitting()" class="dropdown-item" />
+                                                    </form>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        {% endif %}
+
                                     {% endif %}
                                 </div>
                             </li>
@@ -131,10 +165,24 @@
         </div>
     </div>
 
+    <div class="modal fade" id="comment" role="dialog">
+
+    </div>
+
 {% endblock content %}
 
 
 {% block javascripts %}
+
+<script type="text/javascript">
+    var $ = jQuery.noConflict();
+    function open_modal(url){
+        $('#comment').load(url, function(){
+            $(this).modal('show');
+        });
+    }
+</script>
+
 <script>
 		Circles.create({
 			id:'inprogress-circle',
@@ -142,7 +190,7 @@
 			value:{{ inprogress_task }},
 			maxValue:{{ all_task }},
 			width:20,
-			text: {{ inprogress_task }},
+			text: {% if inprogress_task == 0 %}'0'{% else %}{{ inprogress_task }}{% endif %},
 			colors:['#f1f1f1', '#FF9E27'],
 			duration:400,
 			wrpClass:'circles-wrp',
@@ -157,7 +205,7 @@
 			value:{{ finished_task }},
 			maxValue:{{ all_task }},
 			width:20,
-			text: {{ finished_task }},
+			text: {% if finished_task == 0 %}'0'{% else %}{{ finished_task }}{% endif %},
 			colors:['#f1f1f1', '#2BB930'],
 			duration:400,
 			wrpClass:'circles-wrp',
@@ -172,7 +220,7 @@
 			value:{{ expired_task }},
 			maxValue:{{ all_task }},
 			width:20,
-			text: {{ expired_task }},
+			text: {% if expired_task == 0 %}'0'{% else %}{{ expired_task }}{% endif %},
 			colors:['#f1f1f1', '#F25961'],
 			duration:400,
 			wrpClass:'circles-wrp',

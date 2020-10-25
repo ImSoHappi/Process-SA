@@ -86,7 +86,9 @@
 
         <div class="row">
             <div class="col-md-12">
+                {% if task %}
                 <ul class="timeline">
+                    
                         {% for task in task_list %}
                             <li class="{% if task.responsable.id == employee.id %}timeline-inverted{% endif %}"> 
                                 {% if task.status == 0 %}<div class="timeline-badge success"><i class="fas fa-calendar-check"></i></div>{% endif %}
@@ -99,7 +101,7 @@
                                         <h1 class="timeline-title">
                                             {{ task.name }} 
                                             {% if task.status == 4 %}<span class="h5 text-success">Nuevo</span>{% endif %} 
-                                            {% if task.status == 3 %}<span class="h5 text-warning">Rechazado:</span> <span class="text-warning h6">{% for comment in comment_list %} {% if comment.task.pk == task.pk %} {{ comment.created_at | date:'d/m/Y' }} - {{ comment.created_at | time:"h:i a" }} </span><button class="btn btn-info btn-xs pull-right" onclick="open_modal('{% url 'detail_reject' client_pk=process.client.pk process_pk=process.pk task_pk=task.pk reject_pk=comment.pk %}')">Revisar</button>{% endif %} {% endfor %}{% endif %}
+                                            {% if employee.role == 0 or employee.role == 2 %}{% if task.status == 3 %}<span class="h5 text-warning">Rechazado:</span> <span class="text-warning h6">{% for comment in comment_list %} {% if comment.task.pk == task.pk %} {{ comment.created_at | date:'d/m/Y' }} - {{ comment.created_at | time:"h:i a" }} </span><button class="btn btn-info btn-xs pull-right" onclick="open_modal('{% url 'detail_reject' client_pk=process.client.pk process_pk=process.pk task_pk=task.pk reject_pk=comment.pk %}')">Revisar</button>{% endif %} {% endfor %}{% endif %}{% endif %}
                                             {% if task.status == 1 %}<span class="h5 text-primary">En proceso</span>{% endif %}
                                             {% if task.status == 2 %}<span class="h5 text-danger">Atrasada</span>{% endif %}
                                             {% if task.status == 0 %}<span class="h5 text-secondary">Terminada</span>{% endif %}
@@ -161,6 +163,9 @@
                             </li>
                         {% endfor %}
                 </ul>
+                {% else  %}
+                <center><h2 class="mt-5 mb-5">Aún no hay tareas</h2></center>
+                {% endif %}
             </div>
         </div>
     </div>

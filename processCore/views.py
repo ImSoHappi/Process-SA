@@ -52,7 +52,7 @@ def process_detail(request, client_pk, process_pk):
             task = get_object_or_404(Task, id=request.POST['taskpk'])
             task.status = 1
             task.save()
-            return redirect('process_detail', client_pk=client_pk, process_pk=process_pk)
+            return redirect('process_detail', client_pk=client_pk, process_pk=process_pk)   
                 
     context = {}
     context['client'] = Client.objects.get(pk=client_pk)
@@ -167,7 +167,22 @@ def reject_task(request, client_pk, process_pk, task_pk):
 
 def detail_reject(request, client_pk, process_pk, task_pk, reject_pk):
 
+    if request.method == 'POST':
+
+        if "delete_task" in request.POST:
+            instance = Rejectcomment.objects.get(pk=reject_pk)
+            instance.delete()
+
+            instance = Task.objects.get(pk=task_pk)
+            instance.delete()
+
+            return redirect('process_detail', client_pk=client_pk, process_pk=process_pk)
+ 
     context = {}
+    context['edite'] = taskForm
     context['comment'] = Rejectcomment.objects.get(pk=reject_pk)
+    context['task'] = Task.objects.get(pk=task_pk)
+    context['process'] = Process.objects.get(pk=process_pk)
+    context['client'] = Client.objects.get(pk=client_pk)
 
     return render(request, 'comment_detail.html', context=context)

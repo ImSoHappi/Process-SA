@@ -10,13 +10,17 @@
             <div class="modal-body card-body">
                 <h4 class="card-title">Responsable: {{ comment.responsable }}</h4>
                 <p class="text-muted mt--1">{{ comment.created_at }}</p>
-                <h5 class="card-title">Razón:</h5>
+                <h5 class="card-title">Tarea:</h5>
+                <p>{{ task.description }}</p>
+                <h5 class="card-title">Razón del rechazo:</h5>
                 <p>{{ comment.reason }}</p>
             </div>
-
-            <div class="modal-footer">
-                <button class="btn btn-danger" type="button" data-dismiss="modal">Eliminar tarea</button>
-                <button class="btn btn-primary" type="submit">Editar tarea</button>
-            </div>
+            <form action="{% url 'detail_reject' client_pk=process.client.pk process_pk=process.pk task_pk=task.pk reject_pk=comment.pk %}" method="POST">
+                {% csrf_token %}
+                <div class="modal-footer">
+                    <input type="submit" value="Eliminar tarea" name="delete_task" onsubmit="setFormSubmitting()" class="btn btn-danger" />
+                    <button class="btn btn-Primary" type="button" data-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
     </div>
 </div>

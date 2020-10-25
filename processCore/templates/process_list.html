@@ -27,6 +27,9 @@
             <div style="margin-bottom: 75px;">
                 <a href="{% url 'add_process' client_pk=client.pk %}" class="mb-5"><button class="btn btn-success pull-right"><span class="btn-label"><i class="fa fa-plus"></i></span>Crear proceso</button></a>
             </div>
+            <div style="margin-bottom: 75px;">
+                <a href="{% url 'unidad_list' client_pk=client.pk %}" class="mb-5"><button class="btn btn-info pull-right"><span class="btn-label"><i></i></span>Unidades internas</button></a>
+            </div>
         {% endif %}
         
         <div class="row">

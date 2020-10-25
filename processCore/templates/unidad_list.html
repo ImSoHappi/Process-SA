@@ -1,0 +1,55 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+    
+    <div class="page-inner">
+
+        <div class="page-header">
+            <h4 class="page-title">Listado unidades internas del cliente: {{ client.name }} </h4>
+            <ul class="breadcrumbs">
+                <li class="nav-home">
+                    <a href="{% url 'client_list' %} ">
+                        <i class="flaticon-home"></i>
+                    </a>
+                </li>
+                <li class="separator">
+                    <i class="flaticon-right-arrow"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="">Listado unidades internas: {{ client.name }}</a>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="row">
+            {% for unidad in unidad_list %}
+            <div class="col-md-4">
+                <div class="card card-primary card-annoucement card-round">
+                    <div class="card-body text-center">
+                        <div class="card-opening">{{ unidad.name }}</div>
+                        <div class="card-desc"><strong>Descripcion: </strong><br>{{ unidad.description }}</div>
+                        <div class="card-detail mt-3">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}            
+        </div>
+        
+        <div class="row">
+            <div class="col-md-4">
+                <a href="/process_list/{{ client.pk }}" class="btn btn-light btn-rounded mt-4">Volver</a>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock content %}
+
+
+{% block javascripts %}
+
+{% endblock javascripts %}

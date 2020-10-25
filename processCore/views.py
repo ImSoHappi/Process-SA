@@ -18,6 +18,15 @@ def client_list(request):
     
     return render(request, 'index.html', context=context)
 
+def unidad_list(request, client_pk):
+    current_user = request.user
+
+    context = {}
+    context['client'] = Client.objects.get(pk=client_pk)
+    context['unidad_list'] = UnidadInterna.objects.filter(client=client_pk)
+    context['employee'] = userModel.objects.get(user=current_user)
+
+    return render(request, 'unidad_list.html', context=context)
 
 def process_list(request, client_pk):
     current_user = request.user

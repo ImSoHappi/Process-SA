@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'y6%pt3cw#-%eh79p_r%=8$#=7=gl$*4vs6qq&5_eh#s1w@pna^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -87,7 +87,7 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.oracle',
-            'NAME': '3.229.113.139:1521/xe',
+            'NAME': '18.207.157.13:1521/xe',
             'USER': 'c##processbd',
             'PASSWORD': '123asd123',
             'TEST': {
@@ -135,4 +135,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'processCore/static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'processCore/collectstatic')

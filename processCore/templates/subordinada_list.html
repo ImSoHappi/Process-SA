@@ -1,0 +1,67 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+    
+    <div class="page-inner">
+
+        <div class="page-header">
+            <h4 class="page-title">Tareas subordinadas de: {{ task.name }}</h4>
+            <ul class="breadcrumbs">
+                <li class="nav-home">
+                    <a href="{% url 'client_list' %} ">
+                        <i class="flaticon-home"></i>
+                    </a>
+                </li>
+                <li class="separator">
+                    <i class="flaticon-right-arrow"></i>
+                </li>
+                <li class="nav-item">
+                    <a href=""></a>
+                </li>
+                <li class="separator">
+                    {% if employee.role == 0 or employee.role == 2 %}
+                        <center><div>
+                            <a href="{% url 'agregar_subordinada' client_pk=client.pk process_pk=process.pk task_pk=task.pk %}" class="mb-5"><button class="btn btn-info btn-lg"><span class="btn-label"><i class="fa fa-plus"></i></span>Agregar tarea subordinada</button></a>
+                        </div></center>
+                    {% endif %}
+                </li>                
+            </ul>
+        </div>
+        
+        <div class="list-group">
+          <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+            {% if subordinada_list %}
+            {% for subordinada in subordinada_list %}
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1"><strong>{{ subordinada.name }}</strong></h5>
+              <small>Plazo límite:{{subordinada.expire_at}}</small>
+            </div>
+            <p class="mb-1">{{ subordinada.description }}</p>
+            <small><strong>Responsable:</strong>{{subordinada.responsable}}</small>
+            {% endfor %}
+            {% else %}
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1"><strong>No hay tareas subordinadas registradas</strong></h5>
+                    <small></small>
+                </div>              
+            {% endif %}
+          </a>          
+        </div>
+        
+        <div class="row">
+            <div class="col-md-4">
+                <a href="/process_detail/{{ client.pk }}/{{ process.pk }}" class="btn btn-light btn-rounded mt-4">Volver</a>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock content %}
+
+
+{% block javascripts %}
+
+{% endblock javascripts %}

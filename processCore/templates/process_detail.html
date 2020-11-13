@@ -112,6 +112,8 @@
                                         <h5 class="text-muted">Responsable: {{ task.responsable }}</h5>
                                         <hr>
                                         <p>{{ task.description }}</p>
+                                        <br>
+                                        <a href="{% url 'subordinada_list' client_pk=process.client.pk process_pk=process.pk task_pk=task.pk %}" class="btn btn-info">Tareas subordinadas</a>
                                     </div>
                                     
                                     {% if task.responsable.id == employee.id %}

@@ -13,6 +13,18 @@ class taskForm(forms.ModelForm):
             'expire_at': forms.DateTimeInput(),
         }
 
+class subordinadaForm(forms.ModelForm):
+    class Meta:
+        model = TareaSubordinada
+        fields = ('name', 'responsable', 'description', 'expire_at',)
+        widgets = {
+
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'responsable': forms.Select(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control'}),
+            'expire_at': forms.DateTimeInput(),
+        }
+
 class processForm(forms.ModelForm):
     class Meta:
         model = Process
@@ -29,6 +41,15 @@ class clientForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control'}),
+        }
+
+class unidadForm(forms.ModelForm):
+    class Meta:
+        model = UnidadInterna
+        fields = ('name', 'description',)
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control'}),
         }
 

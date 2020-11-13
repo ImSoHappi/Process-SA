@@ -53,6 +53,18 @@ class Task(models.Model):
     def __str__(self):
         return self.name
 
+class TareaSubordinada(models.Model):
+    task = models.ForeignKey('Task', on_delete = models.CASCADE)
+    name = models.CharField(max_length=50)
+    responsable = models.ForeignKey('processAuth.userModel', on_delete = models.CASCADE, blank=True)
+    description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    expire_at = models.DateTimeField()
+    status = models.IntegerField(choices = TASK_STATUS, default=4)
+    
+    def __str__(self):
+        return self.name
+
 class Rejectcomment(models.Model):
     task = models.ForeignKey('Task', on_delete = models.CASCADE)
     responsable = models.ForeignKey('processAuth.userModel', on_delete = models.CASCADE, blank=True)

@@ -21,22 +21,37 @@
                 <li class="nav-item">
                     <a href="">Listado unidades internas: {{ client.name }}</a>
                 </li>
+                <li class="separator">
+                    {% if employee.role == 0 or employee.role == 2 %}
+                        <center><div>
+                            <a href="{% url 'agregar_unidad' client_pk=client.pk %}" class="mb-5"><button class="btn btn-info btn-lg"><span class="btn-label"><i class="fa fa-plus"></i></span>Agregar unidad interna</button></a>
+                        </div></center>
+                    {% endif %}
+                </li>
             </ul>
         </div>
         
         <div class="row">
-            {% for unidad in unidad_list %}
-            <div class="col-md-4">
-                <div class="card card-primary card-annoucement card-round">
-                    <div class="card-body text-center">
-                        <div class="card-opening">{{ unidad.name }}</div>
-                        <div class="card-desc"><strong>Descripcion: </strong><br>{{ unidad.description }}</div>
-                        <div class="card-detail mt-3">
+            {% if unidad_list %}
+                {% for unidad in unidad_list %}
+                <div class="col-md-4">
+                    <div class="card card-primary card-annoucement card-round">
+                        <div class="card-body text-center">
+                            <div class="card-opening">{{ unidad.name }}</div>
+                            <div class="card-desc"><strong>Descripcion: </strong><br>{{ unidad.description }}</div>
+                            <div class="card-detail mt-3">
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            {% endfor %}            
+                {% endfor %} 
+            {% else %}
+            <div class="row">
+                <div class="col">
+                    <center><h2 class="mt-5 mb-5">No hay unidades internas registradas</h2></center>
+                </div>                
+            </div>            
+            {% endif %}            
         </div>
         
         <div class="row">

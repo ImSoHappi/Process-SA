@@ -28,6 +28,26 @@ def unidad_list(request, client_pk):
 
     return render(request, 'unidad_list.html', context=context)
 
+def agregar_unidad(request, client_pk):
+    if request.method == 'POST':
+        form = unidadForm(request.POST)
+        
+        if form.is_valid():
+            UnidadInterna = form.save(commit=False)
+            UnidadInterna.client = Client.objects.get(pk=client_pk)
+            UnidadInterna.save()
+            
+            return redirect('unidad_list', client_pk=client_pk)
+
+    else:
+        form = unidadForm()
+
+    context = {}
+    context['client'] = Client.objects.get(pk=client_pk)    
+    context['form'] = form
+
+    return render(request, 'forms/agregar_unidad.html', context=context)
+
 def process_list(request, client_pk):
     current_user = request.user
 
@@ -100,6 +120,41 @@ def add_task(request, client_pk, process_pk):
     context['form'] = form
 
     return render(request, 'forms/add_task.html', context=context)
+
+def subordinada_list(request, client_pk, process_pk, task_pk):
+    current_user = request.user
+
+    context = {}
+    context['client'] = Client.objects.get(pk=client_pk)
+    context['process'] = Process.objects.get(pk=process_pk)
+    context['employee'] = userModel.objects.get(user=current_user)
+    context['task'] = Task.objects.get(pk=task_pk)
+    context['subordinada_list'] = TareaSubordinada.objects.filter(task=task_pk)
+
+    return render(request, 'subordinada_list.html', context=context)
+
+def agregar_subordinada(request, client_pk, process_pk, task_pk):
+
+    if request.method == 'POST':
+        form = subordinadaForm(request.POST)
+        
+        if form.is_valid():
+            TareaSubordinada = form.save(commit=False)
+            TareaSubordinada.task = Task.objects.get(pk=task_pk)
+            TareaSubordinada.save()
+            
+            return redirect('process_detail', client_pk=client_pk, process_pk=process_pk)
+
+    else:
+        form = subordinadaForm()
+
+    context = {}
+    context['client'] = Client.objects.get(pk=client_pk)
+    context['process'] = Process.objects.get(pk=process_pk)
+    context['task'] = Task.objects.get(pk=task_pk)
+    context['form'] = form
+
+    return render(request, 'forms/agregar_subordinada.html', context=context)
 
 
 def add_process(request, client_pk):

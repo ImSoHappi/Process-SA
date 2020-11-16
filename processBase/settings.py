@@ -77,17 +77,17 @@ WSGI_APPLICATION = 'processBase.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 # if DEBUG:
-#     DATABASES = {
+# DATABASES = {
 #         'default': {
-#             'ENGINE': 'django.db.backends.sqlite3',
-#             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#         }
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
+# }
 # else:
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
-        'NAME': '18.207.157.13:1521/xe',
+        'NAME': '3.238.126.177:1521/xe',
         'USER': 'c##processbd',
         'PASSWORD': '123asd123',
         'TEST': {

@@ -28,6 +28,41 @@ def unidad_list(request, client_pk):
 
     return render(request, 'unidad_list.html', context=context)
 
+def listado_flujo(request, client_pk, process_pk):
+    current_user = request.user
+
+    context = {}
+    context['client'] = Client.objects.get(pk=client_pk)
+    context['process'] = Process.objects.get(pk=process_pk)
+    context['flujo_list'] = FlujoTareas.objects.filter(process=process_pk)   
+    context['employee'] = userModel.objects.get(user=current_user) 
+
+    return render(request, 'flujo_list.html', context=context)
+
+def agregar_flujo(request, client_pk, process_pk):
+
+    if request.method == 'POST':
+        form = flujoForm(request.POST)
+        
+        if form.is_valid():
+            FlujoTareas = form.save(commit=False)
+            FlujoTareas.process = Process.objects.get(pk=process_pk)
+            FlujoTareas.save()
+            
+            return redirect('listado_flujo', client_pk=client_pk, process_pk=process_pk)
+
+    else:
+        form = flujoForm()
+
+    context = {}
+    context['client'] = Client.objects.get(pk=client_pk)
+    context['process'] = Process.objects.get(pk=process_pk)
+    context['task'] = Task.objects.all()    
+    context['form'] = form
+
+    return render(request, 'forms/agregar_flujo.html', context=context)
+
+
 def agregar_unidad(request, client_pk):
     if request.method == 'POST':
         form = unidadForm(request.POST)

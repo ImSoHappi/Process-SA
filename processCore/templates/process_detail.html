@@ -74,9 +74,14 @@
         <!-- TimeLine -->
         
         {% if employee.role == 0 or employee.role == 2 %}
-            <center><div>
+        <div class="row">
+            <div class="col-sm" style="text-align: right;">
                 <a href="{% url 'add_task' client_pk=client.pk process_pk=process.pk %}" class="mb-5"><button class="btn btn-success btn-lg"><span class="btn-label"><i class="fa fa-plus"></i></span>Crear tarea</button></a>
-            </div></center>
+            </div>
+            <div class="col-sm">
+                <a href="{% url 'listado_flujo' client_pk=client.pk process_pk=process.pk %}" class="mb-5"><button class="btn btn-primary btn-lg"><span class="btn-label"></span>Flujos de tareas</button></a>
+            </div>
+        </div>
         {% endif %}
 
         <div class="col-md-12 mb-1 mt-5 row">

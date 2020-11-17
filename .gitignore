@@ -8,6 +8,7 @@ Backlog.md
 site_dev.conf
 mysqldata/
 venv
+mvenv
 
 ### Django ###
 *.log

@@ -1,5 +1,6 @@
 from django import forms
 from .models import *
+from processAuth.models import userModel
 
 class taskForm(forms.ModelForm):
     class Meta:
@@ -12,6 +13,20 @@ class taskForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'class': 'form-control'}),
             'expire_at': forms.DateTimeInput(),
         }
+
+class flujoForm(forms.ModelForm):
+    class Meta:
+        model = FlujoTareas
+        fields = ('nombre', 'responsables', 'tareas', 'descripcion', 'plazo_maximo',)
+        responsables: forms.ModelMultipleChoiceField(queryset=userModel.objects.all())
+        tareas: forms.ModelMultipleChoiceField(queryset=Task.objects.all())
+        widgets = {
+
+            'nombre': forms.TextInput(attrs={'class': 'form-control'}),       
+            'description': forms.Textarea(attrs={'class': 'form-control'}),
+            'plazo_maximo': forms.DateTimeInput(),
+        }
+
 
 class subordinadaForm(forms.ModelForm):
     class Meta:

@@ -1,0 +1,81 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="page-inner">
+
+    <div class="page-header">
+        <h4 class="page-title">Flujo de tareas para el proceso: {{ process.name }} </h4>
+        <ul class="breadcrumbs">
+            <li class="nav-home">
+                <a href="{% url 'client_list' %} ">
+                    <i class="flaticon-home"></i>
+                </a>
+            </li>
+            <li class="separator">
+                <i class="flaticon-right-arrow"></i>
+            </li>
+            <li class="nav-item">
+                <a href="">Listado flujos de tareas: {{ client.name }}</a>
+            </li>
+            {% if employee.role == 2 %}
+            <li class="separator">
+                
+                    <center><div>
+                        <a style="text-align: r;" href="{% url 'agregar_flujo' client_pk=client.pk process_pk=process.pk %}" class="mb-5"><button class="btn btn-primary"><span class="btn-label"></span>Agregar flujo de tareas</button></a>
+                    </div></center>
+                
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+
+{% if flujo_list %}
+    {% for flujo in flujo_list %}
+        <div class="col-md-4">      
+            <div class="card" style="width: 18rem;">    
+                <div class="card-body">
+                    <h5 class="card-title">{{ flujo.nombre }}</h5>
+                    <p class="card-text">{{ flujo.descripcion }}</p>  
+                    <h4>Tareas del flujo:</h3>                
+                    {% for tareas in flujo.tareas.all %}
+                        <ul class="list-group">
+                            <li class="list-group-item list-group-item-secondary">{{tareas}}</li>                                        
+                        </ul>
+                    {% endfor %}
+                    <h4>Responsables:</h3>
+                    {% for responsables in flujo.responsables.all %}
+                        <ul class="list-group">
+                            <li class="list-group-item list-group-item-secondary">{{responsables}}</li>                                        
+                        </ul>
+                    {% endfor %}
+                    <br>
+                    <p class="card-text">Plazo máximo: {{ flujo.plazo_maximo }}</p>
+                  <!-- Boton para abrir modal detalles del flujo de tareas -->
+                </div>
+            </div>
+        </div>
+    {% endfor %} 
+{% else %}
+    <div class="row">
+        <div class="col">
+            <center><h2 class="mt-5 mb-5">No hay flujos de tareas creados</h2></center>
+        </div>                
+    </div>            
+{% endif %}
+
+<div class="row">
+    <div class="col-md-4">
+        <a href="/process_detail/{{client.pk}}/{{process.pk}}" class="btn btn-light btn-rounded mt-4">Volver</a>
+    </div>
+</div>
+
+{% endblock content %}
+
+
+{% block javascripts %}
+
+{% endblock javascripts %}

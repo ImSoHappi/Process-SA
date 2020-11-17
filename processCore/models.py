@@ -73,3 +73,16 @@ class Rejectcomment(models.Model):
     
     def __str__(self):
         return self.reason
+
+class FlujoTareas(models.Model):
+    nombre = models.CharField(max_length=60)
+    process = models.ForeignKey('Process', on_delete = models.CASCADE)
+    tareas = models.ManyToManyField('Task')
+    responsables = models.ManyToManyField('processAuth.userModel')
+    descripcion = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    plazo_maximo = models.DateTimeField()
+    status = models.IntegerField(choices = TASK_STATUS, default=4)
+
+    def __str__(self):
+        return self.nombre

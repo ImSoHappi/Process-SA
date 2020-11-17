@@ -10,6 +10,9 @@ urlpatterns = [
     path('process_list/<int:client_pk>/', views.process_list, name="process_list"),
     path('process_list/<int:client_pk>/add_process', views.add_process, name="add_process"),
 
+    path('flujo_list/<int:client_pk>/<int:process_pk>/', views.listado_flujo, name="listado_flujo"),
+    path('flujo_list/<int:client_pk>/<int:process_pk>/agregar_flujo', views.agregar_flujo, name="agregar_flujo"),
+
     path('process_detail/<int:client_pk>/<int:process_pk>/', views.process_detail, name="process_detail"),
     path('process_detail/<int:client_pk>/<int:process_pk>/add_task', views.add_task, name="add_task"),
     path('process_detail/<int:client_pk>/<int:process_pk>/<int:task_pk>', views.subordinada_list, name="subordinada_list"),

@@ -285,3 +285,34 @@ def detail_reject(request, client_pk, process_pk, task_pk, reject_pk):
     context['client'] = Client.objects.get(pk=client_pk)
 
     return render(request, 'comment_detail.html', context=context)
+
+def problema_list(request):
+    current_user = request.user
+
+    context = {}
+    context['problema_list'] = ProblemaTarea.objects.all()    
+
+    return render(request, 'problema_list.html', context=context)
+
+def reportar_problema(request, client_pk, process_pk, task_pk):
+
+    if request.method == 'POST':
+        form = problemaForm(request.POST)
+        
+        if form.is_valid():
+            ProblemaTarea = form.save(commit=False)
+            ProblemaTarea.tarea = Task.objects.get(pk=task_pk)
+            ProblemaTarea.save()
+            
+            return redirect('process_detail', client_pk=client_pk, process_pk=process_pk)
+
+    else:
+        form = problemaForm()
+
+    context = {}
+    context['client'] = Client.objects.get(pk=client_pk)
+    context['process'] = Process.objects.get(pk=process_pk)
+    context['task'] = Task.objects.get(pk=task_pk)
+    context['form'] = form
+
+    return render(request, 'forms/reportar_problema.html', context=context)

@@ -75,3 +75,14 @@ class commentForm(forms.ModelForm):
         widgets = {
             'reason': forms.Textarea(attrs={'class': 'form-control'}),
         }
+
+class problemaForm(forms.ModelForm):
+    class Meta:
+        model = ProblemaTarea
+        fields = ('titulo', 'responsable', 'descripcion')
+        widgets = {
+
+            'titulo': forms.TextInput(attrs={'class': 'form-control'}),
+            'responsable': forms.Select(attrs={'class': 'form-control'}),
+            'descripcion': forms.Textarea(attrs={'class': 'form-control'}),            
+        }

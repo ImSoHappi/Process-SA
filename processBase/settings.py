@@ -76,20 +76,27 @@ WSGI_APPLICATION = 'processBase.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-# if DEBUG:
-# DATABASES = {
-#         'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-# else:
+
 DATABASES = {
-         'default': {
-             'ENGINE': 'django.db.backends.sqlite3',
-             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-         }
-     }
+        'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+# else:
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.oracle',
+#         'NAME': '3.238.174.208:1521/xe',
+#         'USER': 'c##processbd',
+#         'PASSWORD': '123asd123',
+#         'TEST': {
+#             'USER': 'default_test',
+#             'TBLSPACE': 'default_test_tbls',
+#             'TBLSPACE_TMP': 'default_test_tbls_tmp',
+#         },
+#     },
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators

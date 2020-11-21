@@ -23,12 +23,11 @@
 
 			<!-- Navbar Header -->
 			<nav class="navbar navbar-header navbar-expand-lg" data-background-color="blue">
-				
 				{% if user.is_authenticated %}
-
-
-				{% endif %}
-				
+					<div class="p-2 bg-info d-flex p-3 bg-secondary text-white rounded float-right">
+						Bienvenido, {{employee.name}}!					
+					</div>
+				{% endif %}				
 			</nav>
 			<!-- End Navbar -->
 

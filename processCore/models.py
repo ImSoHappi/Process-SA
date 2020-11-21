@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-
+from django.conf import settings
 # Create your models here.
 
 TASK_STATUS = (
@@ -42,6 +42,10 @@ class Process(models.Model):
         return self.name
 
 class Task(models.Model):
+    autor = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        null=True)
     process = models.ForeignKey('Process', on_delete = models.CASCADE)
     name = models.CharField(max_length=50)
     responsable = models.ForeignKey('processAuth.userModel', on_delete = models.CASCADE, blank=True)
@@ -86,3 +90,13 @@ class FlujoTareas(models.Model):
 
     def __str__(self):
         return self.nombre
+
+class ProblemaTarea(models.Model):
+    tarea = models.ForeignKey('Task', on_delete = models.CASCADE)
+    responsable = models.ForeignKey('processAuth.userModel', on_delete = models.CASCADE, blank=True)
+    titulo = models.CharField(max_length=60, default='Encabezado problema')
+    descripcion = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.titulo

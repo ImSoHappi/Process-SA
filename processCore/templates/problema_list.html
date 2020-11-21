@@ -1,0 +1,72 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Problemas tareas asignadas {% endblock %} 
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="page-inner">
+
+    <div class="page-header">
+        <h4 class="page-title">Listado de problemas en tareas recibidos: Usuario {{ user }} </h4>
+        <ul class="breadcrumbs">
+            <li class="nav-home">
+                <a href="{% url 'client_list' %} ">
+                    <i class="flaticon-home"></i>
+                </a>
+            </li>
+            <li class="separator">
+                <i class="flaticon-right-arrow"></i>
+            </li>
+            <li class="nav-item">
+                <a href="">Listado problemas </a>
+            </li>
+            <li class="separator">
+                
+            </li>                
+        </ul>
+    </div>
+    
+    
+    <div class="list-group">
+        {% if problema_list %}
+            {% for problema in problema_list %}
+                {% if problema.tarea.autor == user %}
+                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">
+                                {{problema.titulo}}
+                            </h5>
+                            <small>
+                                {{problema.created_at}}
+                            </small>
+                        </div>
+                        <p class="mb-1">
+                            Descripcion: {{problema.descripcion}}
+                        </p>
+                        <small>
+                            Tarea asociada: {{problema.tarea.name}}
+                        </small>
+                    </a>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <h2>No hay problemas registrados</h2>
+        {% endif %}
+    </div>               
+    
+    
+    <div class="row">
+        <div class="col-md-4">
+            <a href="{% url 'client_list' %}" class="btn btn-light btn-rounded mt-4">Volver</a>
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}
+
+
+{% block javascripts %}
+
+{% endblock javascripts %}

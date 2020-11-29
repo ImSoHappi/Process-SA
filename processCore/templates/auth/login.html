@@ -8,61 +8,46 @@
 
 {% block content %}
 
-    <div class="page-inner">
-        <div class="page-header">
-            <h4 class="page-title">Inicio sesion</h4>
-            <ul class="breadcrumbs">
-                <li class="nav-home">
-                    <a href="#">
-                        <i class="flaticon-home"></i>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">
-                            <span>Inicio sesion</span>
-                        </div>
+<div class="page-inner">
+    <div class="page-header">
+        <h4 class="page-title">Inicio sesion</h4>
+        <ul class="breadcrumbs">
+            
+        </ul>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <span>Formulario usuario</span>
                     </div>
-
-                    <br />
-
-                    <form method="post" action="">
-
-                        {% csrf_token %}
-
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6 col-lg-4">
-
-                                    <div class="wrap-input100 validate-input" data-validate = "">
-                                        <input name="username" type="text" value="" required class="input100">
-                                        <span class="focus-input100"></span>
-                                        <span class="label-input100">usuario</span>
-                                    </div>
-
-                                    <div class="wrap-input100 validate-input" data-validate="Password is required">
-                                        <input name="password" type="password" value="" required class="input100">
-                                        <span class="focus-input100"></span>
-                                        <span class="label-input100">Contraseña</span>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-action">
-                            <input type="submit" class="login100-form-btn" value="Iniciar sesión">&nbsp;
-                        </div>
-
-                    </form>
-
                 </div>
+
+                <br />
+
+                <form method="post" action="">
+
+                    {% csrf_token %}
+                    <div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Usuario</label>
+                        <input name="username" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required placeholder="Usuario">                              
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Contraseña</label>
+                        <input name="password" type="password" class="form-control" value="" id="exampleInputPassword1" required placeholder="Contraseña">
+                    </div>
+                    <div class="col-md-12 text-center">
+                        <button type="submit" class="btn btn-primary" value="Iniciar sesión">Ingresar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
 
 {% endblock content %}
 

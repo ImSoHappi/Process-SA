@@ -33,38 +33,45 @@
         </ul>
     </div>
 
-{% if flujo_list %}
-    {% for flujo in flujo_list %}
-        <div class="col-md-4">      
-            <div class="card" style="width: 18rem;">    
-                <div class="card-body">
-                    <h5 class="card-title">{{ flujo.nombre }}</h5>
-                    <p class="card-text">{{ flujo.descripcion }}</p>  
-                    <h4>Tareas del flujo:</h3>                
-                    {% for tareas in flujo.tareas.all %}
-                        <ul class="list-group">
-                            <li class="list-group-item list-group-item-secondary">{{tareas}}</li>                                        
-                        </ul>
-                    {% endfor %}
-                    <h4>Responsables:</h3>
-                    {% for responsables in flujo.responsables.all %}
-                        <ul class="list-group">
-                            <li class="list-group-item list-group-item-secondary">{{responsables}}</li>                                        
-                        </ul>
-                    {% endfor %}
-                    <br>
-                    <p class="card-text">Plazo máximo: {{ flujo.plazo_maximo }}</p>
-                  <!-- Boton para abrir modal detalles del flujo de tareas -->
-                </div>
-            </div>
-        </div>
-    {% endfor %} 
+    <section>
+        <div class="card-group">
+            {% if flujo_list %}
+                {% for flujo in flujo_list %}
+                    <div class="col-sm-3">
+                        <div class="card">    
+                            <div class="card-body">
+                                <h5 class="card-title">{{ flujo.nombre }}</h5>
+                                <p class="card-text">{{ flujo.descripcion }}</p>  
+                                <h3>Tareas del flujo:</h3>                
+                                {% for tareas in flujo.tareas.all %}
+                                    <ul class="list-group">
+                                        <li class="list-group-item list-group-item-secondary">{{tareas}}</li>                                        
+                                    </ul>
+                                {% endfor %}
+                                <h4>Responsables:</h3>
+                                {% for responsables in flujo.responsables.all %}
+                                    <ul class="list-group">
+                                        <li class="list-group-item list-group-item-secondary">{{responsables}}</li>                                        
+                                    </ul>
+                                {% endfor %}
+                                <br>
+                                <p class="card-text">Plazo máximo: {{ flujo.plazo_maximo }}</p>                  
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}                 
+        </div>        
+    </section>
+
+                                            
 {% else %}
+<div class="container">
     <div class="row">
         <div class="col">
             <center><h2 class="mt-5 mb-5">No hay flujos de tareas creados</h2></center>
         </div>                
-    </div>            
+    </div>  
+</div>           
 {% endif %}
 
 <div class="row">

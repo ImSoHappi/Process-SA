@@ -48,6 +48,7 @@ def agregar_flujo(request, client_pk, process_pk):
             FlujoTareas = form.save(commit=False)
             FlujoTareas.process = Process.objects.get(pk=process_pk)
             FlujoTareas.save()
+            form.save_m2m()
             
             return redirect('listado_flujo', client_pk=client_pk, process_pk=process_pk)
 

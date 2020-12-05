@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load pwa %}
 <head>
 
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -10,7 +11,6 @@
 		Process SA{% block title %}{% endblock %}
 	</title>
 
-	{% load pwa %}
 	{% progressive_web_app_meta %}
 
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />

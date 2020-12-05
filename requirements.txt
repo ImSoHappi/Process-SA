@@ -2,3 +2,4 @@ Django
 gunicorn
 whitenoise
 cx_oracle
+django-progressive-web-app

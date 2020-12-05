@@ -16,6 +16,8 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'processCore/static/js', 'serviceworker.js')
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -40,6 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'processCore',
     'processAuth',
+    'processPWA',
+    'pwa',
 ]
 
 MIDDLEWARE = [
@@ -78,25 +82,18 @@ WSGI_APPLICATION = 'processBase.wsgi.application'
 
 
 DATABASES = {
-        'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    'default': {
+        'ENGINE': 'django.db.backends.oracle',
+        'NAME': '3.236.242.235:1521/xe',
+        'USER': 'c##processbd',
+        'PASSWORD': '123asd123',
+        'TEST': {
+            'USER': 'default_test',
+            'TBLSPACE': 'default_test_tbls',
+            'TBLSPACE_TMP': 'default_test_tbls_tmp',
+        },
+    },
 }
-# else:
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.oracle',
-#         'NAME': '3.238.174.208:1521/xe',
-#         'USER': 'c##processbd',
-#         'PASSWORD': '123asd123',
-#         'TEST': {
-#             'USER': 'default_test',
-#             'TBLSPACE': 'default_test_tbls',
-#             'TBLSPACE_TMP': 'default_test_tbls_tmp',
-#         },
-#     },
-# }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators

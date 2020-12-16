@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'processBase.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
-        'NAME': '3.235.173.252:1521/xe',
+        'NAME': '3.238.94.60:1521/xe',
         'USER': 'c##processbd',
         'PASSWORD': '123asd123',
         'TEST': {

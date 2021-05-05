@@ -23,7 +23,6 @@ PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'processCore/static/js', 'servi
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'y6%pt3cw#-%eh79p_r%=8$#=7=gl$*4vs6qq&5_eh#s1w@pna^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
